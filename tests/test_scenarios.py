@@ -73,18 +73,11 @@ def test_scenario_08_lists_declined_transactions(client):
     assert "TX-9005" in body["answer"] or "insufficient funds" in body["answer"].lower()
 
 
-@pytest.mark.parametrize("message", [p.values[0] for p in SCENARIOS if p.id != "06-antecipacao"])
+@pytest.mark.parametrize("message", [p.values[0] for p in SCENARIOS], ids=[p.id for p in SCENARIOS])
 def test_scenarios_detected_as_english(client, message):
-    """FR-002 / NFR-005: the English scenarios are detected as `en` so the answer comes back in English."""
+    """FR-002 / NFR-005: all 10 scenarios are English sentences (even when quoting a Portuguese product term
+    such as "(antecipação)") and must be detected as `en` so the answer comes back in English."""
     body = client.post("/chat", json={"message": message, "user_id": USER}).json()
-    assert body["route"]["language"] == "en"
-
-
-@pytest.mark.xfail(strict=False, reason="detect_language weights 'ã'/'ç' in '(antecipação)' above the English function words")
-def test_scenario_06_detected_as_english(client):
-    """FR-002 / NFR-005: scenario 6 is an English sentence even though it quotes a Portuguese product term."""
-    body = client.post("/chat", json={"message": "How does receivables advance (antecipação) work with Getnet?",
-                                      "user_id": USER}).json()
     assert body["route"]["language"] == "en"
 
 

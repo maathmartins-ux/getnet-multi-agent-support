@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+import re
 import time
 
 from ..llm import LLMError
 from ..observability import RAG_EMPTY
-from ..rag.store import KnowledgeBase, Retrieved
+from ..rag.store import KnowledgeBase, Retrieved, tokenize
 from ..schemas import AgentMessage, AgentName, AgentResult, Intent, Source, ToolCall
 from ..tools.general import GeneralTools, detect_city, detect_currency, is_weather_question
 from ..tools.web_search import WebSearchTool
@@ -68,7 +69,7 @@ class KnowledgeAgent(BaseAgent):
             except (LLMError, KeyError, ValueError, TypeError) as exc:
                 self.log.warning("knowledge LLM failed, extractive fallback", extra={"extra_fields": {"error": str(exc)}})
                 fallback = True
-        return AgentResult(agent=self.name, answer=self._extractive(hits, msg.language), sources=sources,
+        return AgentResult(agent=self.name, answer=self._extractive(hits, msg.language, msg.text), sources=sources,
                            confidence=0.7, llm_fallback=fallback)
 
     def _rag_prompt(self, msg: AgentMessage, hits: list[Retrieved]) -> str:
@@ -82,12 +83,19 @@ class KnowledgeAgent(BaseAgent):
         return (f"User language: {msg.language}\nUser question: {msg.text}{ctx}\n\n"
                 f"Retrieved passages:\n{passages}")
 
-    def _extractive(self, hits: list[Retrieved], lang: str) -> str:
+    def _extractive(self, hits: list[Retrieved], lang: str, query: str = "") -> str:
+        """Offline answer: for each top chunk keep the 2 whole sentences with the highest term overlap."""
         header, sources_label, _ = HEADERS[lang]
+        qtokens = set(tokenize(query))
         parts = [header, ""]
         for i, h in enumerate(hits[:3], start=1):
-            text = h.chunk.text.replace("\n", " ")
-            parts.append(f"**{h.chunk.heading}** — {text[:420]}{'…' if len(text) > 420 else ''} [{i}]")
+            text = re.sub(r"\s+", " ", h.chunk.text.replace("\n", " ")).strip()
+            sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text) if s.strip()]
+            ranked = sorted(enumerate(sentences), key=lambda kv: (-len(qtokens & set(tokenize(kv[1]))), kv[0]))
+            chosen = sorted(ranked[:2], key=lambda kv: kv[0])
+            excerpt = " ".join(s for _, s in chosen) or text[:300]
+            label = h.chunk.doc_title if h.chunk.heading.lower().startswith("summary") else h.chunk.heading
+            parts.append(f"**{label}** — {excerpt} [{i}]")
             parts.append("")
         parts.append(f"{sources_label}: " + "; ".join(
             f"[{i}] {h.chunk.doc_title}" + (f" ({h.chunk.url})" if h.chunk.url else "") for i, h in enumerate(hits[:3], start=1)))

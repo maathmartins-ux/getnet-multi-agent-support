@@ -155,17 +155,31 @@ class KnowledgeBase:
         self.chunks: list[Chunk] = [c for d in documents for c in chunk_document(d)]
         self.index = BM25Index()
         for c in self.chunks:
-            # heading + text + document keywords (bilingual boost)
-            self.index.add(tokenize(f"{c.heading} {c.text} {' '.join(c.keywords)} {c.doc_title}"))
+            # field weighting: heading x3, document keywords x2 (bilingual), title x2, body x1
+            fields = [c.heading] * 3 + [" ".join(c.keywords)] * 2 + [c.doc_title] * 2 + [c.text]
+            self.index.add(tokenize(" ".join(fields)))
 
     @classmethod
     def from_directory(cls, directory: str | Path) -> "KnowledgeBase":
         return cls(load_documents(directory))
 
-    def retrieve(self, query: str, *, top_k: int = 4, relative_threshold: float = 0.35) -> list[Retrieved]:
-        hits = self.index.search(tokenize(query), top_k=top_k)
+    def retrieve(self, query: str, *, top_k: int = 4, relative_threshold: float = 0.35,
+                 max_per_doc: int = 2) -> list[Retrieved]:
+        """Top-k chunks above a relative threshold, with at most `max_per_doc` chunks per document (diversity)."""
+        hits = self.index.search(tokenize(query), top_k=top_k * 3)
         if not hits:
             return []
         best = hits[0][1]
-        return [Retrieved(chunk=self.chunks[i], score=round(s, 3)) for i, s in hits
-                if s > 0 and s >= best * relative_threshold]
+        out: list[Retrieved] = []
+        per_doc: dict[str, int] = {}
+        for i, s in hits:
+            chunk = self.chunks[i]
+            if s <= 0 or s < best * relative_threshold:
+                break
+            if per_doc.get(chunk.doc_title, 0) >= max_per_doc:
+                continue
+            per_doc[chunk.doc_title] = per_doc.get(chunk.doc_title, 0) + 1
+            out.append(Retrieved(chunk=chunk, score=round(s, 3)))
+            if len(out) >= top_k:
+                break
+        return out
