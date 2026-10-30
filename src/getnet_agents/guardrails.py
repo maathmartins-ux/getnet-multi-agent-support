@@ -37,8 +37,8 @@ UNSAFE_PATTERNS = [
     r"\b(clonar|clone|skimm\w*) (cart[aã]o|card)s?\b",
     r"\b(lavagem de dinheiro|money laundering)\b",
 ]
-_INJECTION = [re.compile(p, re.I) for p in INJECTION_PATTERNS]
-_UNSAFE = [re.compile(p, re.I) for p in UNSAFE_PATTERNS]
+_INJECTION = [re.compile(p, re.IGNORECASE) for p in INJECTION_PATTERNS]
+_UNSAFE = [re.compile(p, re.IGNORECASE) for p in UNSAFE_PATTERNS]
 
 BLOCK_MESSAGES = {
     "pt": {

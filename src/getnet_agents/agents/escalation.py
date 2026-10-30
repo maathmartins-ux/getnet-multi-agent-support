@@ -38,7 +38,7 @@ REASON_TEXT = {
 class EscalationAgent(BaseAgent):
     name = AgentName.ESCALATION
 
-    def __init__(self, llm, crm: CRM, *, webhook_url: str | None = None,  # noqa: ANN001
+    def __init__(self, llm, crm: CRM, *, webhook_url: str | None = None,
                  client: httpx.Client | None = None) -> None:
         super().__init__(llm)
         self.crm = crm

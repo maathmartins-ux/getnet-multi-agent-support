@@ -35,6 +35,10 @@ Se a venda Pix foi feita e o comprovante não imprimiu: no POS Digital, acesse P
 
 Além da maquininha, o Pix na Getnet pode ser recebido pelo Link de Pagamento (o comprador escolhe entre débito, crédito, Pix, wallet e boleto) e pelo e-commerce (Get Checkout). O QR Code dinâmico é gerado por transação, com valor definido, o que reduz erro de digitação do cliente.
 
+## Do I need a bank account to receive Pix sales with Getnet?
+
+Yes. To receive Pix sales with Getnet the merchant needs a bank account with a registered Pix key: the help center lists as eligibility criteria a Santander bank account as settlement domicile (domicílio bancário) with an active Pix key, a compatible capture device and a registration with an individual legal representative. The Get Clássica manual repeats that Pix on the card machine requires a Santander settlement account. Merchants who do not bank with Santander can open the Getnet digital account (Get Conta) and register their Pix keys in the Getnet Brasil app (Conta > Pix > Minhas Chaves). Pix money lands in the account linked to the registered key, usually in seconds and at most within one calendar day.
+
 ## Summary (EN)
 
 Pix is Brazil's instant payment system and Getnet supports it on card machines (QR code on screen and contactless NFC Pix), on the Get Tap phone app, on payment links and in e-commerce checkout. To enable Pix with Getnet the merchant must register a Pix key tied to the bank account where settlement should land; the help center says the Pix button requires a Santander bank account as settlement domicile with an active Pix key, or the merchant can use the Getnet digital account (Get Conta).

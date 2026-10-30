@@ -14,8 +14,9 @@ import json
 import logging
 import re
 import time
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable, Protocol
+from typing import Any, Protocol
 
 from .schemas import ToolCall
 
@@ -58,13 +59,13 @@ class LLM(Protocol):
                   max_tokens: int = 1000) -> ToolRunResult: ...
 
 
-_JSON_BLOCK = re.compile(r"\{.*\}", re.S)
+_JSON_BLOCK = re.compile(r"\{.*\}", re.DOTALL)
 
 
 def extract_json(text: str) -> dict[str, Any]:
     """Parse the first JSON object in a model reply (tolerates ```json fences and prose around it)."""
     cleaned = text.strip()
-    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", cleaned, flags=re.S)
+    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", cleaned, flags=re.DOTALL)
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError:
@@ -110,7 +111,7 @@ class AnthropicLLM:
                 model=model or self.model, system=system, max_tokens=max_tokens, temperature=temperature,
                 messages=[{"role": "user", "content": user}],
             )
-        except Exception as exc:  # noqa: BLE001 - any SDK/network error degrades the same way
+        except Exception as exc:
             raise LLMError(str(exc)) from exc
         return "".join(getattr(b, "text", "") for b in resp.content).strip()
 
@@ -132,7 +133,7 @@ class AnthropicLLM:
                     model=self.model, system=system, max_tokens=max_tokens, temperature=0.1,
                     tools=[t.to_anthropic() for t in tools], messages=messages,
                 )
-            except Exception as exc:  # noqa: BLE001
+            except Exception as exc:
                 raise LLMError(str(exc)) from exc
             messages.append({"role": "assistant", "content": resp.content})
             if resp.stop_reason != "tool_use":

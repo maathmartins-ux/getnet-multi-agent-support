@@ -229,7 +229,7 @@ curl -s -X POST localhost:8000/chat -H 'content-type: application/json' \
   "agents_involved": ["router", "support", "knowledge"],
   "sources": [
     {"title": "Troubleshooting de conexão", "url": "https://site.getnet.com.br/duvidas/operacional/", "score": 7.412, "snippet": "...", "kind": "knowledge_base"},
-    {"title": "Manual Get Clássica", "url": "https://sitehml.getnet.com.br/wp-content/uploads/2024/01/Manul_GetClassica.pdf", "score": 5.088, "snippet": "...", "kind": "knowledge_base"}
+    {"title": "Manual Get Clássica", "url": "https://site.getnet.com.br/wp-content/uploads/2024/01/Manul_GetClassica.pdf", "score": 5.088, "snippet": "...", "kind": "knowledge_base"}
   ],
   "tools_used": ["get_customer_profile", "get_device_status", "open_support_ticket"],
   "handoff": null,

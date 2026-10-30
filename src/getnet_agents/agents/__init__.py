@@ -3,4 +3,4 @@ from .knowledge import KnowledgeAgent
 from .router import RouterAgent
 from .support import SupportAgent
 
-__all__ = ["RouterAgent", "KnowledgeAgent", "SupportAgent", "EscalationAgent"]
+__all__ = ["EscalationAgent", "KnowledgeAgent", "RouterAgent", "SupportAgent"]

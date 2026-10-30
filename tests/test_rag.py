@@ -4,7 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from getnet_agents.rag.store import Document, KnowledgeBase, chunk_document, load_documents, parse_markdown, tokenize
+from getnet_agents.rag.store import (
+    Document,
+    KnowledgeBase,
+    chunk_document,
+    load_documents,
+    parse_markdown,
+    tokenize,
+)
 
 
 def test_tokenize_strips_accents_and_stopwords():

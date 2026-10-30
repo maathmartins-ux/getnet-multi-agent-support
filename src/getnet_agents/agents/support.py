@@ -48,7 +48,7 @@ def fmt_brl(value: float) -> str:
 class SupportAgent(BaseAgent):
     name = AgentName.SUPPORT
 
-    def __init__(self, llm, crm: CRM) -> None:  # noqa: ANN001
+    def __init__(self, llm, crm: CRM) -> None:
         super().__init__(llm)
         self.crm = crm
 

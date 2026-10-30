@@ -76,7 +76,7 @@ def test_json_formatter_emits_structured_fields():
     records = []
 
     class Capture(logging.Handler):
-        def emit(self, record):  # noqa: ANN001
+        def emit(self, record):
             records.append(JsonFormatter().format(record))
 
     handler = Capture()

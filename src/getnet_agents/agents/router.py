@@ -54,8 +54,7 @@ PRODUCT_KW = STRONG_GETNET_KW + ["card machine", "cartao", "card", "receivables"
 
 PT_HINTS = {"o", "a", "os", "as", "nao", "você", "voce", "como", "quando", "minha", "meu", "é", "da", "do", "para",
             "com", "que", "qual", "quais", "posso", "preciso", "quero", "de", "em", "uma", "um", "e"}
-EN_HINTS = {"the", "what", "my", "is", "can", "do", "how", "when", "will", "i", "with", "to", "does", "need", "my",
-            "should", "via", "into", "through", "and", "of", "it", "for"}
+EN_HINTS = {"the", "what", "my", "is", "can", "do", "how", "when", "will", "i", "with", "to", "does", "need", "should", "via", "into", "through", "and", "of", "it", "for"}
 
 
 def _norm(text: str) -> str:
@@ -75,7 +74,7 @@ def detect_language(text: str) -> str:
 def heuristic_route(text: str) -> RouteDecision:
     n = _norm(text)
     lang = detect_language(text)
-    has = lambda kws: any(k in n for k in kws)  # noqa: E731
+    has = lambda kws: any(k in n for k in kws)
 
     def decision(intent: Intent, conf: float, reason: str) -> RouteDecision:
         return RouteDecision(plan=PLANS[intent], intent=intent, confidence=conf, reason=reason, language=lang,
@@ -99,7 +98,7 @@ def heuristic_route(text: str) -> RouteDecision:
 class RouterAgent(BaseAgent):
     name = AgentName.ROUTER
 
-    def __init__(self, llm, *, model: str | None = None) -> None:  # noqa: ANN001
+    def __init__(self, llm, *, model: str | None = None) -> None:
         super().__init__(llm)
         self.model = model
 

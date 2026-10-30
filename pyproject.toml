@@ -7,7 +7,7 @@ name = "getnet-multi-agent-support"
 version = "1.0.0"
 description = "Multi-agent customer support system for Getnet (Router, Knowledge/RAG, Customer Support, Human Escalation) exposed over FastAPI."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115",
   "uvicorn[standard]>=0.30",
@@ -32,5 +32,5 @@ markers = ["live: tests that call external services (skipped by default)"]
 
 [tool.ruff]
 line-length = 110
-target-version = "py311"
+target-version = "py312"
 src = ["src", "tests"]

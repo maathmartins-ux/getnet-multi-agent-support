@@ -15,8 +15,25 @@ from .agents.router import RouterAgent, detect_language
 from .config import Settings
 from .guardrails import PII_WARNING, check_input, check_output
 from .llm import LLM
-from .observability import AGENT_LATENCY, GUARDRAIL_FLAGS, LATENCY, LLM_FALLBACKS, REQUESTS, TOOL_CALLS, Timer, log_event
-from .schemas import AgentMessage, AgentName, AgentResult, ChatRequest, ChatResponse, GuardrailReport, TraceStep
+from .observability import (
+    AGENT_LATENCY,
+    GUARDRAIL_FLAGS,
+    LATENCY,
+    LLM_FALLBACKS,
+    REQUESTS,
+    TOOL_CALLS,
+    Timer,
+    log_event,
+)
+from .schemas import (
+    AgentMessage,
+    AgentName,
+    AgentResult,
+    ChatRequest,
+    ChatResponse,
+    GuardrailReport,
+    TraceStep,
+)
 
 log = logging.getLogger("orchestrator")
 
@@ -111,7 +128,7 @@ class Orchestrator:
         msg.history.append(res)
         return res
 
-    def _response(self, request_id: str, req: ChatRequest, answer: str, route, agents: list[str],  # noqa: ANN001
+    def _response(self, request_id: str, req: ChatRequest, answer: str, route, agents: list[str],
                   results: list[AgentResult], guard: GuardrailReport, trace: list[TraceStep], total: Timer) -> ChatResponse:
         total.__exit__(None, None, None)
         LATENCY.observe(total.ms / 1000)

@@ -23,13 +23,13 @@ UA = "getnet-multi-agent-support/1.0 (+https://github.com; RAG ingestion; contac
 
 def html_to_markdown(page: str) -> tuple[str, str]:
     """Very small HTML -> markdown converter (no external deps). Returns (title, markdown)."""
-    title_m = re.search(r"<title[^>]*>(.*?)</title>", page, re.S | re.I)
+    title_m = re.search(r"<title[^>]*>(.*?)</title>", page, re.DOTALL | re.IGNORECASE)
     title = html.unescape(title_m.group(1)).strip() if title_m else "untitled"
-    page = re.sub(r"<(script|style|noscript|svg|nav|footer|header)[^>]*>.*?</\1>", " ", page, flags=re.S | re.I)
+    page = re.sub(r"<(script|style|noscript|svg|nav|footer|header)[^>]*>.*?</\1>", " ", page, flags=re.DOTALL | re.IGNORECASE)
     page = re.sub(r"<h([1-6])[^>]*>(.*?)</h\1>", lambda m: f"\n\n{'#' * int(m.group(1))} {m.group(2)}\n\n", page,
-                  flags=re.S | re.I)
-    page = re.sub(r"<li[^>]*>(.*?)</li>", r"\n- \1", page, flags=re.S | re.I)
-    page = re.sub(r"</(p|div|section|article|tr|br)>", "\n\n", page, flags=re.I)
+                  flags=re.DOTALL | re.IGNORECASE)
+    page = re.sub(r"<li[^>]*>(.*?)</li>", r"\n- \1", page, flags=re.DOTALL | re.IGNORECASE)
+    page = re.sub(r"</(p|div|section|article|tr|br)>", "\n\n", page, flags=re.IGNORECASE)
     page = re.sub(r"<[^>]+>", " ", page)
     text = html.unescape(page)
     text = re.sub(r"[ \t]+", " ", text)

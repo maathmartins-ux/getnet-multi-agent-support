@@ -11,9 +11,10 @@ from __future__ import annotations
 
 import json
 import uuid
+from collections.abc import Callable
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from ..llm import ToolSpec
 
@@ -37,7 +38,7 @@ class CRM:
         self.tickets: list[dict[str, Any]] = []
 
     @classmethod
-    def from_json(cls, path: str | Path, *, today: date | None = None) -> "CRM":
+    def from_json(cls, path: str | Path, *, today: date | None = None) -> CRM:
         data = json.loads(Path(path).read_text(encoding="utf-8"))
         return cls(data["customers"], today=today)
 

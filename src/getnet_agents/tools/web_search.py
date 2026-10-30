@@ -54,7 +54,7 @@ class WebSearchTool:
 
     _DDG_RESULT = re.compile(
         r'<a[^>]+class="result__a"[^>]+href="(?P<url>[^"]+)"[^>]*>(?P<title>.*?)</a>.*?'
-        r'<a[^>]+class="result__snippet"[^>]*>(?P<snippet>.*?)</a>', re.S)
+        r'<a[^>]+class="result__snippet"[^>]*>(?P<snippet>.*?)</a>', re.DOTALL)
 
     def _duckduckgo(self, query: str, max_results: int) -> list[WebResult]:
         resp = self._client.get("https://html.duckduckgo.com/html/", params={"q": query},
@@ -62,7 +62,7 @@ class WebSearchTool:
         resp.raise_for_status()
         results: list[WebResult] = []
         for m in self._DDG_RESULT.finditer(resp.text):
-            clean = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s)).strip()  # noqa: E731
+            clean = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s)).strip()
             url = html.unescape(m.group("url"))
             if "uddg=" in url:  # DDG redirect wrapper
                 url = httpx.URL(url).params.get("uddg", url)

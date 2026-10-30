@@ -63,6 +63,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Validate docker-compose
+        run: docker compose config -q
+
 
       - name: Build image
         run: docker build -t getnet-agents .

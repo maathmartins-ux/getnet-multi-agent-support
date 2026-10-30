@@ -71,7 +71,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
 
     @app.middleware("http")
-    async def request_id_middleware(request: Request, call_next):  # noqa: ANN001
+    async def request_id_middleware(request: Request, call_next):
         rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
         response = await call_next(request)
         response.headers["x-request-id"] = rid

@@ -79,23 +79,23 @@ def test_router_agent_offline_uses_heuristic():
 class _BrokenLLM:
     name, offline, model = "broken", False, "fake"
 
-    def complete(self, *a, **k):  # noqa: ANN002, ANN003
+    def complete(self, *a, **k):
         raise LLMError("boom")
 
-    def complete_json(self, *a, **k):  # noqa: ANN002, ANN003
+    def complete_json(self, *a, **k):
         raise LLMError("boom")
 
-    def run_tools(self, *a, **k):  # noqa: ANN002, ANN003
+    def run_tools(self, *a, **k):
         raise LLMError("boom")
 
 
 class _GarbageLLM(_BrokenLLM):
-    def complete_json(self, *a, **k):  # noqa: ANN002, ANN003
+    def complete_json(self, *a, **k):
         return {"intent": "not_an_intent"}
 
 
 class _GoodLLM(_BrokenLLM):
-    def complete_json(self, *a, **k):  # noqa: ANN002, ANN003
+    def complete_json(self, *a, **k):
         return {"intent": "account", "plan": ["support"], "confidence": 0.91, "reason": "ok", "language": "en"}
 
 

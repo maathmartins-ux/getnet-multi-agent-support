@@ -30,7 +30,7 @@ HEADERS = {
 class KnowledgeAgent(BaseAgent):
     name = AgentName.KNOWLEDGE
 
-    def __init__(self, llm, kb: KnowledgeBase, web: WebSearchTool, *, top_k: int = 4,  # noqa: ANN001
+    def __init__(self, llm, kb: KnowledgeBase, web: WebSearchTool, *, top_k: int = 4,
                  general: GeneralTools | None = None) -> None:
         super().__init__(llm)
         self.kb = kb

@@ -6,7 +6,7 @@ import json
 import logging
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
@@ -26,7 +26,7 @@ RAG_EMPTY = Counter("rag_empty_retrievals_total", "Knowledge queries with no chu
 class JsonFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         payload: dict[str, Any] = {
-            "ts": datetime.now(timezone.utc).isoformat(timespec="milliseconds"),
+            "ts": datetime.now(UTC).isoformat(timespec="milliseconds"),
             "level": record.levelname,
             "logger": record.name,
             "msg": record.getMessage(),
@@ -55,11 +55,11 @@ def log_event(logger: logging.Logger, msg: str, **fields: Any) -> None:
 
 
 class Timer:
-    def __enter__(self) -> "Timer":
+    def __enter__(self) -> Timer:
         self._t0 = time.perf_counter()
         return self
 
-    def __exit__(self, *_: Any) -> None:
+    def __exit__(self, *_: object) -> None:
         self.ms = round((time.perf_counter() - self._t0) * 1000, 2)
 
 

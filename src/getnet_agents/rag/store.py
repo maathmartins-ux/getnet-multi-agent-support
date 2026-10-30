@@ -17,10 +17,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 STOPWORDS = set(
-    """a o os as um uma uns umas de do da dos das em no na nos nas por para com sem sobre e ou que se
-    ao à às é são foi ser ter tem como mais menos muito meu minha seu sua isso esse essa este esta
-    the a an of to in on for with and or is are was be my your this that it at by from do does
-    i you we they can how what when where which who why will would should could there here""".split()
+    ["a", "o", "os", "as", "um", "uma", "uns", "umas", "de", "do", "da", "dos", "das", "em", "no", "na", "nos", "nas", "por", "para", "com", "sem", "sobre", "e", "ou", "que", "se", "ao", "à", "às", "é", "são", "foi", "ser", "ter", "tem", "como", "mais", "menos", "muito", "meu", "minha", "seu", "sua", "isso", "esse", "essa", "este", "esta", "the", "a", "an", "of", "to", "in", "on", "for", "with", "and", "or", "is", "are", "was", "be", "my", "your", "this", "that", "it", "at", "by", "from", "do", "does", "i", "you", "we", "they", "can", "how", "what", "when", "where", "which", "who", "why", "will", "would", "should", "could", "there", "here", "need", "needs", "via", "use", "using", "know", "tell", "please", "about", "want", "wants", "like", "also", "just", "some", "any", "preciso", "quero", "gostaria", "saber", "sobre", "pode", "posso", "tenho", "favor", "alguma", "algum"]
 )
 
 
@@ -59,7 +56,7 @@ class Retrieved:
     score: float
 
 
-_FRONTMATTER = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.S)
+_FRONTMATTER = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 
 
 def parse_markdown(path: Path) -> Document:
@@ -160,7 +157,7 @@ class KnowledgeBase:
             self.index.add(tokenize(" ".join(fields)))
 
     @classmethod
-    def from_directory(cls, directory: str | Path) -> "KnowledgeBase":
+    def from_directory(cls, directory: str | Path) -> KnowledgeBase:
         return cls(load_documents(directory))
 
     def retrieve(self, query: str, *, top_k: int = 4, relative_threshold: float = 0.35,
