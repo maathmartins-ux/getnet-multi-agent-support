@@ -71,7 +71,7 @@ class EscalationAgent(BaseAgent):
             try:
                 answer = self.llm.complete(self.system_prompt, f"language: {lang}\nuser message: {msg.text}\n"
                                            f"reason: {reason}\nprotocol: {handoff.ticket_id}\nqueue: {queue}\n"
-                                           f"priority: {priority}\nexpected response: {SLA[priority][lang]}", max_tokens=200) or answer
+                                           f"priority: {priority}\nexpected response: {SLA[priority][lang]}") or answer
             except LLMError:
                 pass
         return AgentResult(agent=self.name, answer=answer, handoff=handoff, tool_calls=calls, confidence=1.0,

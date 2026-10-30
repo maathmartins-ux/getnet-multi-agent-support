@@ -18,6 +18,7 @@ AGENT_LATENCY = Histogram("agent_step_latency_seconds", "Per-agent latency", ["a
                           buckets=(0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 30))
 GUARDRAIL_FLAGS = Counter("guardrail_flags_total", "Guardrail flags raised", ["flag", "stage"])
 HANDOFFS = Counter("handoffs_total", "Human handoffs", ["reason"])
+LLM_ERRORS = Counter("llm_errors_total", "Anthropic SDK/API errors by exception type", ["error_type"])
 LLM_FALLBACKS = Counter("llm_fallbacks_total", "LLM failures that degraded to the deterministic path", ["agent"])
 TOOL_CALLS = Counter("tool_calls_total", "Tool invocations", ["tool"])
 RAG_EMPTY = Counter("rag_empty_retrievals_total", "Knowledge queries with no chunk above threshold")

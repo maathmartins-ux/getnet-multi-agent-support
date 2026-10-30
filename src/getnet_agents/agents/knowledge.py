@@ -57,7 +57,7 @@ class KnowledgeAgent(BaseAgent):
         fallback = False
         if not self.llm.offline:
             try:
-                js = self.llm.complete_json(self.system_prompt, self._rag_prompt(msg, hits), max_tokens=900)
+                js = self.llm.complete_json(self.system_prompt, self._rag_prompt(msg, hits))
                 answer = str(js["answer"]).strip()
                 conf = max(0.0, min(1.0, float(js.get("confidence", 0.7))))
                 used = [int(i) for i in js.get("used_sources", []) if isinstance(i, (int, float))]
@@ -118,7 +118,7 @@ class KnowledgeAgent(BaseAgent):
             try:
                 listing = "\n\n".join(f"[{i}] {r.title}\n{r.url}\n{r.snippet}" for i, r in enumerate(results, start=1))
                 js = self.llm.complete_json(self.system_prompt, f"User language: {msg.language}\nUser question: {msg.text}\n\n"
-                                            f"Web search results:\n{listing}", max_tokens=600)
+                                            f"Web search results:\n{listing}")
                 return AgentResult(agent=self.name, answer=str(js["answer"]).strip(), sources=sources,
                                    tool_calls=[call], confidence=float(js.get("confidence", 0.6)))
             except (LLMError, KeyError, ValueError, TypeError) as exc:

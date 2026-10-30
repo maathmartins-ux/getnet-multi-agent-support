@@ -108,7 +108,7 @@ class RouterAgent(BaseAgent):
         if self.llm.offline:
             return heuristic, False
         try:
-            js = self.llm.complete_json(self.system_prompt, f"Message: {text}", model=self.model, max_tokens=200)
+            js = self.llm.complete_json(self.system_prompt, f"Message: {text}", model=self.model, effort="low")
             intent = Intent(js["intent"])
             plan = [AgentName(a) for a in js.get("plan") or PLANS[intent]]
             decision = RouteDecision(plan=plan, intent=intent, confidence=float(js.get("confidence", 0.5)),

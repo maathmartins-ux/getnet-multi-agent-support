@@ -2,7 +2,7 @@
 
 ## Technical context
 - **Language**: Python 3.11+ (3.12 in Docker). **API**: FastAPI + Uvicorn. **Validation**: Pydantic v2.
-- **LLM**: Anthropic Claude (`claude-sonnet-5-5` for generation, `claude-haiku-5-5` for routing) behind an `LLM` protocol with an `OfflineLLM` implementation.
+- **LLM**: Anthropic Claude (`claude-opus-5-5` for generation, `claude-haiku-5-5` for routing) behind an `LLM` protocol with an `OfflineLLM` implementation.
 - **RAG**: markdown corpus → heading/paragraph chunks → BM25 (pure Python, accent-insensitive, bilingual keyword boost) → top-k with relative score threshold → grounded generation with citations.
 - **Tools**: in-process Python functions exposed to the LLM as Anthropic tool definitions; executed through a handler registry (`tools/crm.py`, `tools/web_search.py`).
 - **Observability**: stdlib JSON logging, `prometheus-client`, per-request trace returned in the response.

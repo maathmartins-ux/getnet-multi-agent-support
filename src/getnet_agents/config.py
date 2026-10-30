@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # LLM
     llm_provider: str = "auto"  # auto | anthropic | offline
     anthropic_api_key: str | None = None
-    anthropic_model: str = "claude-sonnet-5-5"
+    anthropic_model: str = "claude-opus-5-5"
     anthropic_router_model: str = "claude-haiku-5-5"
     llm_timeout_s: float = 30.0
     llm_max_retries: int = 2

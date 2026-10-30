@@ -66,7 +66,7 @@ Everything is read from environment variables (12-factor, `src/getnet_agents/con
 |---|---|---|
 | `LLM_PROVIDER` | `auto` | `auto` uses Anthropic when `ANTHROPIC_API_KEY` is set, otherwise `offline`. Also accepts `anthropic` / `offline`. |
 | `ANTHROPIC_API_KEY` | empty | Claude API key. Absent = deterministic offline mode. |
-| `ANTHROPIC_MODEL` | `claude-sonnet-5-5` | Generation model (Knowledge, Support, Escalation agents). |
+| `ANTHROPIC_MODEL` | `claude-opus-5-5` | Generation model (Knowledge, Support, Escalation agents). |
 | `ANTHROPIC_ROUTER_MODEL` | `claude-haiku-5-5` | Cheaper/faster model for routing. |
 | `LLM_TIMEOUT_S` | `30` | Per-call timeout (NFR-002). |
 | `LLM_MAX_RETRIES` | `2` | Bounded retries before deterministic fallback (NFR-002). |

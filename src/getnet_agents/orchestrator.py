@@ -107,9 +107,10 @@ class Orchestrator:
             for flag in out_flags:
                 GUARDRAIL_FLAGS.labels(flag, "output").inc()
             handoff = next((r.handoff for r in results if r.handoff), None)
+            degraded = routed.llm_fallback or any(r.llm_fallback for r in results)
             REQUESTS.labels(route.intent.value, self.mode, "handoff" if handoff else "answered").inc()
             return self._response(request_id, req, answer, route, ["router"] + [r.agent.value for r in results],
-                                  results, guard, trace, total)
+                                  results, guard, trace, total, mode=f"{self.mode}-fallback" if degraded else self.mode)
 
     # ------------------------------------------------------------------ helpers
     def _run(self, agent: BaseAgent, msg: AgentMessage, trace: list[TraceStep]) -> AgentResult:
@@ -129,17 +130,18 @@ class Orchestrator:
         return res
 
     def _response(self, request_id: str, req: ChatRequest, answer: str, route, agents: list[str],
-                  results: list[AgentResult], guard: GuardrailReport, trace: list[TraceStep], total: Timer) -> ChatResponse:
+                  results: list[AgentResult], guard: GuardrailReport, trace: list[TraceStep], total: Timer,
+                  mode: str | None = None) -> ChatResponse:
         total.__exit__(None, None, None)
         LATENCY.observe(total.ms / 1000)
         resp = ChatResponse(
             request_id=request_id, user_id=req.user_id, answer=answer, route=route, agents_involved=agents,
             sources=[s for r in results for s in r.sources], tools_used=[c.name for r in results for c in r.tool_calls],
             handoff=next((r.handoff for r in results if r.handoff), None), guardrails=guard, trace=trace,
-            latency_ms=total.ms, mode=self.mode, model=self.llm.model,
+            latency_ms=total.ms, mode=mode or self.mode, model=self.llm.model,
         )
         log_event(log, "chat.completed", request_id=request_id, user_id=req.user_id,
                   intent=route.intent.value if route else "blocked", plan=agents, latency_ms=total.ms,
                   tools=resp.tools_used, handoff=bool(resp.handoff), guardrail_flags=guard.input_flags + guard.output_flags,
-                  mode=self.mode)
+                  mode=mode or self.mode)
         return resp
