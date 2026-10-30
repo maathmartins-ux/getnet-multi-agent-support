@@ -24,4 +24,4 @@ services:
       - WEB_SEARCH_PROVIDER=disabled
     volumes:
       - ./tests:/app/tests:ro
-    command: sh -c "pip install -q pytest && pytest -q"
+    command: sh -c "python -m pip install -q --user pytest && python -m pytest -q -p no:cacheprovider"

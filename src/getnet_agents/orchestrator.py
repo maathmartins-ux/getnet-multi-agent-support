@@ -65,8 +65,8 @@ class Orchestrator:
                                            "confidence": route.confidence, "source": route.source,
                                            "language": route.language, "llm_fallback": routed.llm_fallback}))
             plan = list(route.plan)
-            if route.confidence < self.settings.router_confidence_threshold and plan != [AgentName.ESCALATION]:
-                msg.context["escalation_reason"] = "low_confidence"
+            if route.confidence < self.settings.router_confidence_threshold:
+                msg.context["escalation_reason"] = "low_confidence"  # never guess: hand off (BR-003)
                 plan = [AgentName.ESCALATION]
                 trace.append(TraceStep(agent="orchestrator", action="low_confidence_handoff", duration_ms=0.0,
                                        detail={"threshold": self.settings.router_confidence_threshold}))

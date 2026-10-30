@@ -60,7 +60,7 @@ content or in the customer data, and hand off to a human when it cannot resolve 
 | 5 | My card machine will not connect to the internet, what should I do? | support → knowledge | `get_device_status` + KB |
 | 6 | How does receivables advance (antecipação) work with Getnet? | knowledge | sources from KB |
 | 7 | What is the euro exchange rate today? | knowledge (general_web) | web search tool call |
-| 8 | My card machine is showing a transaction decline error. | support → knowledge | `get_device_status`, ticket |
+| 8 | My card machine is showing a transaction decline error. | support → knowledge | `get_transactions(status=declined)` + `get_device_status`; ISO 8583 code explained; ticket only for terminal-side errors |
 | 9 | How many installments can I split a sale into with the crediário? | knowledge | sources from KB |
 | 10 | Can I sell through WhatsApp using the Payment Link? | knowledge | sources from KB |
 

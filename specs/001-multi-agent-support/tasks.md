@@ -28,10 +28,10 @@ Legend: `[x]` done · `[ ]` pending · each task names the requirement it closes
 - [x] T017 FastAPI app `/chat` `/health` `/metrics` (FR-001, FR-009)
 
 ## Phase 4 — Verification
-- [ ] T018 Unit tests: router, guardrails, rag, tools (FR-002, BR-002, FR-003, FR-005)
-- [ ] T019 Integration tests: API + 10 official scenarios (FR-001, FR-008)
-- [ ] T020 Eval dataset + runner (BR-004)
-- [ ] T021 Docker build + compose run verified (FR-009)
+- [x] T018 Unit tests: router, guardrails, rag, tools (FR-002, BR-002, FR-003, FR-005)
+- [x] T019 Integration tests: API + 10 official scenarios (FR-001, FR-008)
+- [x] T020 Eval dataset + runner (BR-004)
+- [~] T021 Docker build + compose run — verified by the GitHub Actions `docker` job (build → run → `/health` + `/chat` smoke); local Docker daemon unavailable on the authoring machine, no local evidence (FR-009)
 
 ## Phase 5 — Docs
-- [ ] T022 README (FR-010), testing strategy, observability/eval strategy, video script
+- [x] T022 README (FR-010), testing strategy, observability/eval strategy, video script

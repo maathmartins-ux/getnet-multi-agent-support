@@ -25,7 +25,7 @@ PLANS: dict[Intent, list[AgentName]] = {
 }
 
 GENERAL_KW = ["weather", "forecast", "clima", "previsao do tempo", "tempo amanha", "chover", "euro", "dolar", "dollar",
-              "exchange rate", "cambio", "cotacao", "bitcoin", "news", "noticia", "capital of", "who is", "quem e",
+              "exchange rate", "cambio", "cotacao", "bitcoin", "news", "noticia", "capital of", "capital da", "capital do", "who is", "quem e",
               "temperature", "temperatura"]
 STRONG_GETNET_KW = ["getnet", "maquininha", "pix", "antecipa", "crediario", "link de pagamento", "payment link",
                     "get classica", "get smart", "get mobile", "superget"]
@@ -66,7 +66,8 @@ def _norm(text: str) -> str:
 
 def detect_language(text: str) -> str:
     words = re.findall(r"[a-záàâãéêíóôõúç]+", text.lower())
-    pt = sum(w in PT_HINTS for w in words) + sum(ch in "ãõçêôâ" for ch in text.lower()) * 2
+    # accented characters are a weak signal (product names like "Clássica"/"antecipação" appear in English too)
+    pt = sum(w in PT_HINTS for w in words) + (1 if any(ch in "ãõçêôâ" for ch in text.lower()) else 0)
     en = sum(w in EN_HINTS for w in words)
     return "en" if en > pt else "pt"
 

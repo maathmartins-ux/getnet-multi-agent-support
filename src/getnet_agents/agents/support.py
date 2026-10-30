@@ -97,6 +97,10 @@ class SupportAgent(BaseAgent):
         txs, c = self._call(handlers, "get_transactions", days=7, status="declined")
         calls.append(c)
         declined = txs.get("transactions", [])
+        status, c2 = self._call(handlers, "get_device_status")  # terminal-side error vs issuer decline
+        calls.append(c2)
+        devices = status.get("devices", [])
+        device = devices[0] if devices else None
         if lang == "pt":
             lines = [f"Olá, {profile['name'].split()[0]}! Uma transação negada quase sempre é decisão do banco emissor do cartão, "
                      "não um defeito da maquininha. Nos últimos 7 dias encontrei:"]
@@ -110,11 +114,16 @@ class SupportAgent(BaseAgent):
             meaning = DECLINE_CODES.get(code, {}).get(lang, t.get("decline_reason", ""))
             lines.append(f"- {fmt_date(t['date'])} · {t.get('brand', '')} {t['method']} · {fmt_brl(t['amount_brl'])} · "
                          + (f"código {code}: {meaning}" if lang == "pt" else f"code {code}: {meaning}"))
+        if device and device.get("last_error"):
+            lines.append((f"Sua maquininha {device['model']} (série {device['serial']}) também registra o erro `{device['last_error']}` "
+                          f"e está {device['status']}; isso pode afetar as transações.") if lang == "pt" else
+                         (f"Your {device['model']} (serial {device['serial']}) also reports error `{device['last_error']}` "
+                          f"and is {device['status']}; this can affect transactions."))
         lines.append("Se o erro aparecer para todos os cartões, aí sim pode ser a maquininha — veja os passos abaixo e, se persistir, abro um chamado técnico."
                      if lang == "pt" else
                      "If every card is declined, the machine itself may be at fault — follow the steps below and, if it persists, I will open a technical ticket.")
         return AgentResult(agent=self.name, answer="\n".join(lines), tool_calls=calls, confidence=0.85,
-                           data={"customer": profile, "declined_transactions": declined})
+                           data={"customer": profile, "declined_transactions": declined, "device": device})
 
     def _device(self, msg: AgentMessage, profile: dict[str, Any], calls: list[ToolCall], handlers: dict[str, Any]) -> AgentResult:
         lang = msg.language
