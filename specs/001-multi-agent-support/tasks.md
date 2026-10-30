@@ -7,25 +7,25 @@ Legend: `[x]` done · `[ ]` pending · each task names the requirement it closes
 - [x] T002 Constitution + spec + plan + data model (SDD artefacts)
 
 ## Phase 1 — Contracts & core
-- [ ] T003 `schemas.py` contracts (FR-001, FR-006)
-- [ ] T004 `llm.py` — protocol, Anthropic implementation with tool loop, OfflineLLM (NFR-001, NFR-002)
-- [ ] T005 `guardrails.py` (BR-002)
-- [ ] T006 `observability.py` — JSON logs + metrics (BR-004)
+- [x] T003 `schemas.py` contracts (FR-001, FR-006)
+- [x] T004 `llm.py` — protocol, Anthropic implementation with tool loop, OfflineLLM (NFR-001, NFR-002)
+- [x] T005 `guardrails.py` (BR-002)
+- [x] T006 `observability.py` — JSON logs + metrics (BR-004)
 
 ## Phase 2 — RAG & tools
-- [ ] T007 `rag/store.py` chunking + BM25 (FR-003)
-- [ ] T008 `rag/ingest.py` URL ingestion CLI (FR-003)
-- [ ] T009 Knowledge corpus `data/knowledge/*.md` from getnet.net (FR-003)
-- [ ] T010 `tools/crm.py` — 5 customer tools + seed data (FR-005)
-- [ ] T011 `tools/web_search.py` — Tavily/DuckDuckGo (FR-004)
+- [x] T007 `rag/store.py` chunking + BM25 (FR-003)
+- [x] T008 `rag/ingest.py` URL ingestion CLI (FR-003)
+- [x] T009 Knowledge corpus `data/knowledge/*.md` from getnet.net (FR-003)
+- [x] T010 `tools/crm.py` — 5 customer tools + seed data (FR-005)
+- [x] T011 `tools/web_search.py` — Tavily/DuckDuckGo (FR-004)
 
 ## Phase 3 — Agents & orchestration
-- [ ] T012 Router Agent + prompt (FR-002)
-- [ ] T013 Knowledge Agent + prompt (FR-003, FR-004)
-- [ ] T014 Customer Support Agent + prompt (FR-005, FR-007)
-- [ ] T015 Human Escalation Agent + prompt (BR-001, BR-003)
-- [ ] T016 Orchestrator (FR-006, BR-003)
-- [ ] T017 FastAPI app `/chat` `/health` `/metrics` (FR-001, FR-009)
+- [x] T012 Router Agent + prompt (FR-002)
+- [x] T013 Knowledge Agent + prompt (FR-003, FR-004)
+- [x] T014 Customer Support Agent + prompt (FR-005, FR-007)
+- [x] T015 Human Escalation Agent + prompt (BR-001, BR-003)
+- [x] T016 Orchestrator (FR-006, BR-003)
+- [x] T017 FastAPI app `/chat` `/health` `/metrics` (FR-001, FR-009)
 
 ## Phase 4 — Verification
 - [ ] T018 Unit tests: router, guardrails, rag, tools (FR-002, BR-002, FR-003, FR-005)

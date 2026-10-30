@@ -1,0 +1,40 @@
+{
+  "_comment": "Seed data for the Customer Support Agent tools. days_ago/last_seen_hours_ago are resolved at load time so the demo works on any date.",
+  "customers": {
+    "cliente1988": {
+      "name": "Maria Oliveira",
+      "business": "Padaria Pão Quente",
+      "segment": "MEI",
+      "plan": "Getnet Plano Essencial",
+      "bank": "Santander ag. 1234 cc. ****89-0",
+      "anticipation_enabled": false,
+      "devices": [
+        {"serial": "GN-CL-778812", "model": "Get Clássica", "connectivity": "wifi+chip", "status": "offline",
+         "last_seen_hours_ago": 5, "firmware": "2.4.1", "last_error": "NETWORK_TIMEOUT"}
+      ],
+      "transactions": [
+        {"id": "TX-9001", "days_ago": 1, "method": "credit", "amount_brl": 320.5, "brand": "Visa", "installments": 1, "status": "approved"},
+        {"id": "TX-9002", "days_ago": 1, "method": "debit", "amount_brl": 89.9, "brand": "Mastercard", "installments": 1, "status": "approved"},
+        {"id": "TX-9003", "days_ago": 1, "method": "pix", "amount_brl": 45.0, "brand": "Pix", "installments": 1, "status": "approved"},
+        {"id": "TX-9004", "days_ago": 2, "method": "credit_installments", "amount_brl": 1200.0, "brand": "Elo", "installments": 6, "status": "approved"},
+        {"id": "TX-9005", "days_ago": 3, "method": "debit", "amount_brl": 150.0, "brand": "Visa", "installments": 1, "status": "declined", "decline_reason": "51 - insufficient funds"}
+      ]
+    },
+    "cliente2042": {
+      "name": "Carlos Souza",
+      "business": "Oficina Souza Autopeças",
+      "segment": "PJ",
+      "plan": "Getnet Plano Pro",
+      "bank": "Itaú ag. 0456 cc. ****12-3",
+      "anticipation_enabled": true,
+      "devices": [
+        {"serial": "GN-SM-110933", "model": "Get Smart", "connectivity": "wifi+4g", "status": "online",
+         "last_seen_hours_ago": 0, "firmware": "5.1.0", "last_error": null}
+      ],
+      "transactions": [
+        {"id": "TX-7001", "days_ago": 1, "method": "credit", "amount_brl": 2500.0, "brand": "Visa", "installments": 1, "status": "approved"},
+        {"id": "TX-7002", "days_ago": 4, "method": "credit_installments", "amount_brl": 4800.0, "brand": "Mastercard", "installments": 10, "status": "approved"}
+      ]
+    }
+  }
+}
