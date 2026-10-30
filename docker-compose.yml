@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    image: getnet-multi-agent-support:latest
+    container_name: getnet-agents-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-auto}
+      - ENVIRONMENT=${ENVIRONMENT:-docker}
+    volumes:
+      - ./data:/app/data:ro
+    restart: unless-stopped
+
+  tests:
+    profiles: ["test"]
+    build: .
+    image: getnet-multi-agent-support:latest
+    environment:
+      - LLM_PROVIDER=offline
+      - WEB_SEARCH_PROVIDER=disabled
+    volumes:
+      - ./tests:/app/tests:ro
+    command: sh -c "pip install -q pytest && pytest -q"
